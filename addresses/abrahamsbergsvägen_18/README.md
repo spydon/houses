@@ -3,9 +3,10 @@
 Sun and shade in the backyard at Abrahamsbergsvägen 18 in Högmora, Huddinge
 (property Högmora 4:112).
 
-The page shows a satellite image of the lot with the shade drawn on top for any
-day of the year and any time of day. Tap the image to check a spot, or pick one
-of the preset spots: the pool, the terrace along the house and the west deck.
+The page shows the Lantmäteriet aerial photo of the lot, flown in 2025 and
+brightened, with the shade drawn on top for any day of the year and any time of
+day. Tap the image to check a spot, or pick one of the preset spots: the pool,
+the terrace along the house and the west deck.
 
 ## Results
 
@@ -38,12 +39,12 @@ about 20 degrees.
 
 ## Data
 
-| Source                                                                               | Used for                                 |
-| ------------------------------------------------------------------------------------ | ---------------------------------------- |
-| Lantmäteriet 1 meter elevation model, through Mapterhorn terrain tiles               | Ground height                            |
-| Skogsstyrelsen tree height map, laser scanned on 26 March 2020                       | Tree heights, plus 1.5 meters of growth  |
-| Lantmäteriet orthophoto and the satellite image in `assets/backyard.jpg`             | Cleared areas, buildings, georeferencing |
-| Solar position algorithm from the US National Oceanic and Atmospheric Administration | Sun position                             |
+| Source                                                                               | Used for                                |
+| ------------------------------------------------------------------------------------ | --------------------------------------- |
+| Lantmäteriet 1 meter elevation model, through Mapterhorn terrain tiles               | Ground height                           |
+| Skogsstyrelsen tree height map, laser scanned on 26 March 2020                       | Tree heights, plus 1.5 meters of growth |
+| Lantmäteriet orthophoto from 2025, in `assets/backyard.jpg`                          | Background, cleared areas, buildings    |
+| Solar position algorithm from the US National Oceanic and Atmospheric Administration | Sun position                            |
 
 Trees that stood where the house, the pool and the neighbor's house are today
 have been removed from the 2020 scan. The house is modeled as a 7.5 meter block,
@@ -53,9 +54,8 @@ the pool as 2.8 meters.
 ## Regenerating the data
 
 The scripts in `tool` rebuild `assets/surface_model.json` with Python 3.12,
-numpy, rasterio, pyproj, pillow, requests, inflate64, imagecodecs, matplotlib
-and opencv. Run them in order from the `tool` directory. Put the satellite
-image in `tool/input/backyard.png` and the cover photo in
-`tool/input/cover.png` first. Step 3 streams the 6.5 gigabyte tree height file for
-Stockholm county and keeps only the rows around the house, which takes about
-eight minutes.
+numpy, rasterio, pyproj, pillow, requests, matplotlib, inflate64
+and imagecodecs. Run them in order from the `tool` directory, with the cover
+photo in `tool/input/cover.png`. Step 3 streams the 6.5 gigabyte tree height
+file for Stockholm county and keeps only the rows around the house, which takes
+about eight minutes.

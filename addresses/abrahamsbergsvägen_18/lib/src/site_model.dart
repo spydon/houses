@@ -106,6 +106,8 @@ class ImageGeoreference {
 
   Size get size => Size(width, height);
 
+  double get metersPerPixel => math.sqrt(a * a + b * b);
+
   ({double east, double north}) toGround(Offset pixel) => (
     east: a * pixel.dx + b * pixel.dy + eastOffset,
     north: b * pixel.dx - a * pixel.dy + northOffset,

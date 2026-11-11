@@ -16,6 +16,8 @@ class MethodNotes extends StatelessWidget {
         'the house, the pool and the neighbor\'s house are removed.',
     'Buildings are simple blocks: the house is 7.5 meters tall, the neighboring '
         'houses 6.5 to 7.5 meters and the roofed patio south of the pool 2.8 meters.',
+    'The aerial photo is the Lantmäteriet orthophoto from 2025, brightened so '
+        'the shade is easier to read.',
     'A spot counts as sunny when the sun is visible from 1 meter above the '
         'ground, about the eye height of someone sitting down.',
     'Tree crowns are treated as solid. Leafless deciduous trees let some light '
@@ -61,7 +63,7 @@ class MethodNotes extends StatelessWidget {
               ),
             const SizedBox(height: 4),
             Text(
-              'Satellite image © Google. Elevation data © Lantmäteriet. '
+              'Aerial photo and elevation data © Lantmäteriet. '
               'Tree heights © Skogsstyrelsen.',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,

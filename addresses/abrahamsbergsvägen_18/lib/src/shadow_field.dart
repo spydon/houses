@@ -7,9 +7,11 @@ import 'site_model.dart';
 import 'solar.dart';
 
 class ShadowField {
-  ShadowField(this.model, {this.cellPixels = 3})
-    : columns = (model.image.width / cellPixels).ceil(),
-      rows = (model.image.height / cellPixels).ceil() {
+  ShadowField(this.model, {double cellMeters = 0.4})
+    : cellPixels = math.max(
+        1,
+        (cellMeters / model.image.metersPerPixel).round(),
+      ) {
     final count = columns * rows;
     _east = Float64List(count);
     _north = Float64List(count);
@@ -29,8 +31,8 @@ class ShadowField {
 
   final SiteModel model;
   final int cellPixels;
-  final int columns;
-  final int rows;
+  late final int columns = (model.image.width / cellPixels).ceil();
+  late final int rows = (model.image.height / cellPixels).ceil();
   late final Float64List _east;
   late final Float64List _north;
   late final Float64List _base;

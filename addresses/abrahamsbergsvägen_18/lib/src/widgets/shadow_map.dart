@@ -56,7 +56,7 @@ class ShadowMap extends StatelessWidget {
         : 'Sun below the horizon';
     return Semantics(
       label:
-          'Satellite image of the backyard with shade for ${formatDate(dayOfYear)} '
+          'Aerial photo of the backyard with shade for ${formatDate(dayOfYear)} '
           'at ${formatClock(minute)}. Tap to choose a spot.',
       child: AspectRatio(
         aspectRatio: model.image.width / model.image.height,
@@ -180,7 +180,7 @@ class _Attribution extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         child: Text(
-          'Image © Google',
+          '© Lantmäteriet',
           style: TextStyle(fontSize: 11, color: Color(0xFFFFFFFF)),
         ),
       ),
