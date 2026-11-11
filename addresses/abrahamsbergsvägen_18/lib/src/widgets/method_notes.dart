@@ -6,8 +6,9 @@ class MethodNotes extends StatelessWidget {
   const MethodNotes({super.key});
 
   static const _notes = [
-    'The sun position uses the NOAA solar position algorithm for 59.236° north, '
-        '18.041° east, in Swedish time with summer time.',
+    'The sun position uses the solar position algorithm from the US National '
+        'Oceanic and Atmospheric Administration for 59.236° north, 18.041° east, '
+        'in Swedish time with summer time.',
     'Ground heights come from the Lantmäteriet 1 meter elevation model.',
     'Tree heights come from the Swedish Forest Agency tree height map, measured '
         'by airborne laser scanning on 26 March 2020. Every tree is raised by '

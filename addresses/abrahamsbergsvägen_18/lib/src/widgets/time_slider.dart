@@ -66,9 +66,10 @@ class TimeSlider extends StatelessWidget {
                   for (var m = 0; m <= _maxMinute; m += 5)
                     profile.isLitAt(m) ? 1.0 : 0.0,
                 ],
-                label:
-                    'Direct sun at the ${spotName.toLowerCase()} on this day, '
-                    '${formatDuration(litMinutes)} in total',
+                label: litMinutes == 0
+                    ? 'No direct sun at the ${spotName.toLowerCase()} on this day'
+                    : 'Direct sun at the ${spotName.toLowerCase()} on this day, '
+                          '${formatDuration(litMinutes)} in total',
               ),
             ],
           ),

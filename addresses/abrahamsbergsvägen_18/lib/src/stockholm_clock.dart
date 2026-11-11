@@ -60,19 +60,22 @@ String formatClock(int minuteOfDay) {
   return '$hours:$minutes';
 }
 
+String _plural(int count, String unit) =>
+    count == 1 ? '1 $unit' : '$count ${unit}s';
+
 String formatDuration(int minutes) {
   if (minutes <= 0) {
-    return '0 min';
+    return 'None';
   }
   final hours = minutes ~/ 60;
   final rest = minutes % 60;
   if (hours == 0) {
-    return '$rest min';
+    return _plural(rest, 'minute');
   }
   if (rest == 0) {
-    return '$hours h';
+    return _plural(hours, 'hour');
   }
-  return '$hours h $rest min';
+  return '${_plural(hours, 'hour')} ${_plural(rest, 'minute')}';
 }
 
 String formatDate(int dayOfYear) {

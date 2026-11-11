@@ -64,13 +64,19 @@ class SpotSummary extends StatelessWidget {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: formatDuration(profile.litMinutes),
+                    text: profile.litMinutes == 0
+                        ? 'No direct sun'
+                        : formatDuration(profile.litMinutes),
                     style: theme.textTheme.displaySmall?.copyWith(
-                      color: palette.sunText,
+                      color: profile.litMinutes == 0
+                          ? theme.colorScheme.onSurfaceVariant
+                          : palette.sunText,
                     ),
                   ),
                   TextSpan(
-                    text: '  of direct sun on ${formatDate(profile.dayOfYear)}',
+                    text: profile.litMinutes == 0
+                        ? '  on ${formatDate(profile.dayOfYear)}'
+                        : '  of direct sun on ${formatDate(profile.dayOfYear)}',
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
