@@ -42,6 +42,33 @@ void main() {
     });
   });
 
+  group('building outlines', () {
+    final square = Building(
+      name: 'Square',
+      roof: 10,
+      points: [
+        [0, 0],
+        [4, 0],
+        [4, 4],
+        [0, 4],
+      ],
+    );
+
+    test('a ray from outside enters at the nearest wall', () {
+      expect(square.entryDistance(-3, 2, 1, 0), closeTo(3, 1e-9));
+      expect(square.entryDistance(2, 7, 0, -1), closeTo(3, 1e-9));
+    });
+
+    test('a ray pointing away never enters', () {
+      expect(square.entryDistance(-3, 2, -1, 0), double.infinity);
+    });
+
+    test('points inside are detected', () {
+      expect(square.contains(2, 2), isTrue);
+      expect(square.contains(5, 2), isFalse);
+    });
+  });
+
   group('pool', () {
     test('trees to the south block the sun from late morning', () {
       expect(horizonAt(horizon, 180), closeTo(56.6, 1.5));
@@ -52,7 +79,7 @@ void main() {
       final june = profile(6, 15);
       final windows = june.windows;
       expect(windows, isNotEmpty);
-      expect(windows.first.start, inInclusiveRange(6 * 60 + 38, 6 * 60 + 48));
+      expect(windows.first.start, inInclusiveRange(6 * 60 + 46, 6 * 60 + 56));
       expect(windows.first.end, inInclusiveRange(12 * 60 + 26, 12 * 60 + 36));
     });
 

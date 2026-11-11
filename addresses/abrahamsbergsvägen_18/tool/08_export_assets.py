@@ -4,7 +4,7 @@ import json
 import numpy as np
 from PIL import Image
 
-surface = np.load('surface_final.npy')
+surface = np.load('surface_without_buildings.npy')
 ground = np.load('ground_final.npy')
 meta = json.load(open('dsm_meta.json'))
 E_MIN, N_MAX, W, H = meta['e_min'], meta['n_max'], meta['w'], meta['h']
@@ -21,6 +21,10 @@ out = {
     'ground': {'originEast': GE0, 'originNorth': GN0, 'width': GW, 'height': GH, 'cellSize': 1.0,
                'decimeters': base64.b64encode(ground_dm.tobytes()).decode()},
     'image': {'width': 1125, 'height': 938, 'a': 0.08, 'b': 0.0, 'eastOffset': 673430.0, 'northOffset': 6570320.0},
+    'buildings': [
+        {'name': b['name'], 'roof': round(b['roof'], 2), 'points': [[round(e, 2), round(n, 2)] for e, n in b['poly']]}
+        for b in meta['buildings']
+    ],
     'spots': [
         {'name': 'Pool', 'east': 673472.5, 'north': 6570285.0},
         {'name': 'Terrace by the house', 'east': 673479.0, 'north': 6570288.5},

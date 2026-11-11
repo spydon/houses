@@ -1,7 +1,7 @@
 import numpy as np, math, json
 from datetime import date
 from sun import day_series
-surface = np.load('surface_final.npy'); ground = np.load('ground_final.npy')
+surface = np.load('surface_without_buildings.npy'); ground = np.load('ground_final.npy')
 meta = json.load(open('dsm_meta.json'))
 E_MIN, N_MAX, W, H, CONV = meta['e_min'], meta['n_max'], meta['w'], meta['h'], meta['convergence']
 LAT, LON = 59.23597, 18.04096
@@ -12,9 +12,30 @@ def steps():
         yield d
         d += 0.5 if d < 30 else (1.0 if d < 100 else 2.0)
 STEPS = list(steps())
+BUILDINGS = [(b['roof'], b['poly']) for b in meta['buildings']]
+def inside(poly, x, y):
+    result = False
+    for i in range(len(poly)):
+        (xi, yi), (xj, yj) = poly[i], poly[i - 1]
+        if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi:
+            result = not result
+    return result
+def entry(poly, x, y, dx, dy):
+    best = math.inf
+    for i in range(len(poly)):
+        (ax, ay), (bx, by) = poly[i], poly[(i + 1) % len(poly)]
+        ex, ey = bx - ax, by - ay
+        den = dx * ey - dy * ex
+        if abs(den) < 1e-12: continue
+        wx, wy = ax - x, ay - y
+        t = (wx * ey - wy * ex) / den; u = (wx * dy - wy * dx) / den
+        if t > 0 and 0 <= u <= 1: best = min(best, t)
+    return best
 def horizon(e, n, obs=1.0, bins=720):
     r, c = cell(e, n)
     base = max(ground[r, c] + obs, surface[r, c] + 0.1)
+    for roof, poly in BUILDINGS:
+        if inside(poly, e, n): base = max(base, roof + 0.1)
     out = np.zeros(bins)
     for i in range(bins):
         g = math.radians(i * 360 / bins + CONV); sx, sy = math.sin(g), math.cos(g)
@@ -26,6 +47,10 @@ def horizon(e, n, obs=1.0, bins=720):
             if dz > 0:
                 a = math.degrees(math.atan2(dz, d))
                 if a > best: best = a
+        for roof, poly in BUILDINGS:
+            if roof <= base: continue
+            t = entry(poly, e, n, sx, sy)
+            if math.isfinite(t): best = max(best, math.degrees(math.atan2(roof - base, t)))
         out[i] = best
     return out, base
 def windows(hz, day, step=1):

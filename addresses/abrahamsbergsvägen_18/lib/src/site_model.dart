@@ -128,6 +128,65 @@ class ImageGeoreference {
   }
 }
 
+class Building {
+  Building({
+    required this.name,
+    required this.roof,
+    required List<List<double>> points,
+  }) : east = Float64List.fromList([for (final p in points) p[0]]),
+       north = Float64List.fromList([for (final p in points) p[1]]);
+
+  factory Building.fromJson(Map<String, dynamic> json) => Building(
+    name: json['name'] as String,
+    roof: (json['roof'] as num).toDouble(),
+    points: [
+      for (final point in json['points'] as List<dynamic>)
+        [for (final value in point as List<dynamic>) (value as num).toDouble()],
+    ],
+  );
+
+  final String name;
+  final double roof;
+  final Float64List east;
+  final Float64List north;
+
+  bool contains(double x, double y) {
+    var inside = false;
+    final count = east.length;
+    for (var i = 0, j = count - 1; i < count; j = i++) {
+      if ((north[i] > y) != (north[j] > y) &&
+          x <
+              (east[j] - east[i]) * (y - north[i]) / (north[j] - north[i]) +
+                  east[i]) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  double entryDistance(double x, double y, double dx, double dy) {
+    var best = double.infinity;
+    final count = east.length;
+    for (var i = 0; i < count; i++) {
+      final j = (i + 1) % count;
+      final ex = east[j] - east[i];
+      final ey = north[j] - north[i];
+      final denominator = dx * ey - dy * ex;
+      if (denominator.abs() < 1e-12) {
+        continue;
+      }
+      final wx = east[i] - x;
+      final wy = north[i] - y;
+      final t = (wx * ey - wy * ex) / denominator;
+      final s = (wx * dy - wy * dx) / denominator;
+      if (t > 0 && s >= 0 && s <= 1 && t < best) {
+        best = t;
+      }
+    }
+    return best;
+  }
+}
+
 class SiteModel {
   SiteModel({
     required this.latitude,
@@ -136,6 +195,7 @@ class SiteModel {
     required this.surface,
     required this.ground,
     required this.image,
+    required this.buildings,
     required this.spots,
   });
 
@@ -146,6 +206,10 @@ class SiteModel {
     surface: HeightGrid.fromJson(json['surface'] as Map<String, dynamic>),
     ground: HeightGrid.fromJson(json['ground'] as Map<String, dynamic>),
     image: ImageGeoreference.fromJson(json['image'] as Map<String, dynamic>),
+    buildings: [
+      for (final building in json['buildings'] as List<dynamic>)
+        Building.fromJson(building as Map<String, dynamic>),
+    ],
     spots: [
       for (final spot in json['spots'] as List<dynamic>)
         Spot.fromJson(spot as Map<String, dynamic>),
@@ -180,6 +244,7 @@ class SiteModel {
   final HeightGrid surface;
   final HeightGrid ground;
   final ImageGeoreference image;
+  final List<Building> buildings;
   final List<Spot> spots;
 
   double gridRadians(double azimuth) =>
@@ -188,7 +253,13 @@ class SiteModel {
   double baseHeight(double east, double north) {
     final top = surface.at(east, north) ?? 0;
     final bottom = ground.at(east, north) ?? top;
-    return math.max(bottom + observerHeightAboveGround, top + 0.1);
+    var base = math.max(bottom + observerHeightAboveGround, top + 0.1);
+    for (final building in buildings) {
+      if (building.contains(east, north)) {
+        base = math.max(base, building.roof + 0.1);
+      }
+    }
+    return base;
   }
 
   bool isLit(
@@ -199,6 +270,15 @@ class SiteModel {
     double cosAzimuth,
     double tanElevation,
   ) {
+    for (final building in buildings) {
+      if (building.roof <= base) {
+        continue;
+      }
+      final t = building.entryDistance(east, north, sinAzimuth, cosAzimuth);
+      if (t.isFinite && base + t * tanElevation < building.roof) {
+        return false;
+      }
+    }
     final values = surface.values;
     final width = surface.width;
     final height = surface.height;
@@ -263,6 +343,15 @@ class SiteModel {
         final slope = (values[y.toInt() * width + x.toInt()] - base) / d;
         if (slope > best) {
           best = slope;
+        }
+      }
+      for (final building in buildings) {
+        if (building.roof <= base) {
+          continue;
+        }
+        final t = building.entryDistance(east, north, sinA, cosA);
+        if (t.isFinite && (building.roof - base) / t > best) {
+          best = (building.roof - base) / t;
         }
       }
       result[bin] = math.atan(best) * 180 / math.pi;

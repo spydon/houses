@@ -46,8 +46,10 @@ objects = np.zeros_like(ground)
 for b in buildings:
     m = Path(b['poly']).contains_points(pts).reshape(EE.shape)
     base = ground[m].min() if m.any() else 0
+    b['roof'] = float(base + b['height'])
     objects = np.where(m, np.maximum(objects, base + b['height'] - ground), objects)
 surface = ground + np.maximum(trees, objects)
+np.save('surface_without_buildings.npy', ground + trees)
 
 tr = Transformer.from_crs(4326, 3006, always_xy=True)
 lat, lon = 59.23597, 18.04096
