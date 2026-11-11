@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'address.dart';
 import 'address_card.dart';
+import 'house_logo.dart';
 
 class AddressPickerPage extends StatelessWidget {
   const AddressPickerPage({super.key});
@@ -23,7 +24,14 @@ class AddressPickerPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12,
                     children: [
-                      Text('Houses', style: theme.textTheme.displayLarge),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 16,
+                        children: [
+                          const HouseLogo(size: 54),
+                          Text('Houses', style: theme.textTheme.displayLarge),
+                        ],
+                      ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 560),
                         child: Text(
