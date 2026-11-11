@@ -16,7 +16,7 @@ address is its own Flutter package in `addresses/`.
 
 ```sh
 flutter pub get
-flutter run -d chrome
+flutter run -d chrome --wasm
 ```
 
 ## Adding an address
@@ -28,5 +28,7 @@ flutter run -d chrome
 
 ## Deployment
 
-Every push to `main` runs the tests, builds the web app and publishes it to
-GitHub Pages. Pull requests run the same checks without publishing.
+Every push to `main` runs the tests, builds the web app with WebAssembly
+(`flutter build web --wasm`) and publishes it to GitHub Pages. Browsers without
+WebAssembly garbage collection support get the JavaScript build instead. Pull
+requests run the same checks without publishing.
