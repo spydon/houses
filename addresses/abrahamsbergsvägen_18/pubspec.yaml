@@ -1,0 +1,22 @@
+name: abrahamsbergsvagen_18
+description: Sun and shade model for the backyard at Abrahamsbergsvägen 18 in Högmora, Huddinge.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.7
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/

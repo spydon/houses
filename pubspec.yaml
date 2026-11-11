@@ -1,0 +1,40 @@
+name: houses
+description: Sun and shade studies for houses, published with GitHub Pages.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.7
+
+workspace:
+  - addresses/abrahamsbergsvägen_18
+
+dependencies:
+  abrahamsbergsvagen_18:
+    path: addresses/abrahamsbergsvägen_18
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/SpaceGrotesk-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/SpaceGrotesk-Bold.ttf
+          weight: 700
