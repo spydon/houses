@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-import '../address_info.dart';
 import '../shadow_field.dart';
 import '../site_model.dart';
 import '../solar.dart';
@@ -27,6 +26,7 @@ String compassName(double azimuth) =>
 class ShadowMap extends StatelessWidget {
   const ShadowMap({
     required this.model,
+    required this.photo,
     required this.field,
     required this.shadow,
     required this.spot,
@@ -39,6 +39,7 @@ class ShadowMap extends StatelessWidget {
   });
 
   final SiteModel model;
+  final ImageProvider photo;
   final ShadowField field;
   final ui.Image? shadow;
   final Spot spot;
@@ -84,8 +85,8 @@ class ShadowMap extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      const Image(
-                        image: backyard,
+                      Image(
+                        image: photo,
                         fit: BoxFit.fill,
                         filterQuality: FilterQuality.medium,
                       ),
@@ -95,6 +96,7 @@ class ShadowMap extends StatelessWidget {
                           field: field,
                           shadow: shadow,
                           spot: spot,
+                          net: spot == model.netSpot ? model.net : null,
                           sun: sun,
                           isLit: isLit,
                           scale: scale,
@@ -194,16 +196,20 @@ class _ShadowMapPainter extends CustomPainter {
     required this.field,
     required this.shadow,
     required this.spot,
+    required this.net,
     required this.sun,
     required this.isLit,
     required this.scale,
     required this.sunColor,
   });
 
+  static const _meshMeters = 0.9;
+
   final SiteModel model;
   final ShadowField field;
   final ui.Image? shadow;
   final Spot spot;
+  final ClimbingNet? net;
   final SunPosition sun;
   final bool isLit;
   final double scale;
@@ -236,6 +242,9 @@ class _ShadowMapPainter extends CustomPainter {
       final p = model.image.toImage(preset.east, preset.north) * scale;
       canvas.drawCircle(p, 4.5, white);
       canvas.drawCircle(p, 4.5, outline);
+    }
+    if (net case final net?) {
+      _drawNet(canvas, net);
     }
     final center = model.image.toImage(spot.east, spot.north) * scale;
     final reach = math.min(size.shortestSide * 0.2, 90.0);
@@ -300,6 +309,105 @@ class _ShadowMapPainter extends CustomPainter {
     _northArrow(canvas, size);
   }
 
+  void _drawNet(Canvas canvas, ClimbingNet net) {
+    final corners = [
+      for (final corner in net.corners)
+        model.image.toImage(corner.east, corner.north) * scale,
+    ];
+    final roofStart = corners[0];
+    final roofEnd = corners[1];
+    final poleEnd = corners[2];
+    final poleStart = corners[3];
+    Offset at(double across, double along) => Offset.lerp(
+      Offset.lerp(roofStart, roofEnd, across),
+      Offset.lerp(poleStart, poleEnd, across),
+      along,
+    )!;
+
+    final outline = Path()..addPolygon(corners, true);
+    canvas.drawPath(outline, Paint()..color = const Color(0x40FFF6E0));
+
+    final first = net.roofAnchors[0];
+    final second = net.roofAnchors[1];
+    final width = math.sqrt(
+      math.pow(second.east - first.east, 2) +
+          math.pow(second.north - first.north, 2),
+    );
+    final length = math.sqrt(
+      math.pow(net.poles[0].east - first.east, 2) +
+          math.pow(net.poles[0].north - first.north, 2),
+    );
+    final acrossCount = math.max(2, (width / _meshMeters).round());
+    final alongCount = math.max(2, (length / _meshMeters).round());
+    final shadowPaint = Paint()
+      ..color = const Color(0x8C0B1222)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    final rope = Paint()
+      ..color = const Color(0xFFFFF1D6)
+      ..strokeWidth = 0.9
+      ..style = PaintingStyle.stroke;
+    final mesh = Path();
+    for (var i = 1; i < acrossCount; i++) {
+      final across = i / acrossCount;
+      mesh
+        ..moveTo(at(across, 0).dx, at(across, 0).dy)
+        ..lineTo(at(across, 1).dx, at(across, 1).dy);
+    }
+    for (var j = 1; j < alongCount; j++) {
+      final along = j / alongCount;
+      mesh
+        ..moveTo(at(0, along).dx, at(0, along).dy)
+        ..lineTo(at(1, along).dx, at(1, along).dy);
+    }
+    canvas
+      ..drawPath(mesh, shadowPaint)
+      ..drawPath(mesh, rope);
+
+    final border = Paint()
+      ..color = const Color(0xFFFFF1D6)
+      ..strokeWidth = 2.2
+      ..style = PaintingStyle.stroke
+      ..strokeJoin = StrokeJoin.round;
+    canvas
+      ..drawPath(
+        outline,
+        Paint()
+          ..color = const Color(0xB30B1222)
+          ..strokeWidth = 4
+          ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round,
+      )
+      ..drawPath(outline, border);
+
+    final bar = Paint()
+      ..strokeWidth = 4.5
+      ..strokeCap = StrokeCap.round;
+    canvas
+      ..drawLine(
+        roofStart,
+        roofEnd,
+        Paint()
+          ..color = const Color(0xB30B1222)
+          ..strokeWidth = 7
+          ..strokeCap = StrokeCap.round,
+      )
+      ..drawLine(roofStart, roofEnd, bar..color = const Color(0xFFFFF1D6));
+
+    for (final pole in [poleStart, poleEnd]) {
+      canvas
+        ..drawCircle(pole, 5.5, Paint()..color = const Color(0xFF3B2A1C))
+        ..drawCircle(
+          pole,
+          5.5,
+          Paint()
+            ..color = const Color(0xFFFFFFFF)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 2,
+        );
+    }
+  }
+
   void _dashedLine(
     Canvas canvas,
     Offset from,
@@ -350,6 +458,7 @@ class _ShadowMapPainter extends CustomPainter {
   bool shouldRepaint(_ShadowMapPainter oldDelegate) =>
       oldDelegate.shadow != shadow ||
       oldDelegate.spot != spot ||
+      oldDelegate.net != net ||
       oldDelegate.sun.azimuth != sun.azimuth ||
       oldDelegate.sun.elevation != sun.elevation ||
       oldDelegate.isLit != isLit ||

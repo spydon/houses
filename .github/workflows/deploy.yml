@@ -28,6 +28,8 @@ jobs:
       - run: flutter analyze
       - run: flutter test
       - run: flutter test
+        working-directory: packages/sun_study
+      - run: flutter test
         working-directory: addresses/abrahamsbergsvägen_18
       - run: flutter test
         working-directory: addresses/berganäsvägen_18b

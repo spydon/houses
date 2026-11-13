@@ -7,6 +7,7 @@ import 'day_profile.dart';
 import 'shadow_field.dart';
 import 'site_model.dart';
 import 'stockholm_clock.dart';
+import 'sun_study.dart';
 import 'sun_palette.dart';
 import 'widgets/day_summary.dart';
 import 'widgets/horizon_chart.dart';
@@ -20,14 +21,18 @@ import 'widgets/time_slider.dart';
 import 'widgets/year_slider.dart';
 
 class SunPage extends StatefulWidget {
-  const SunPage({super.key});
+  const SunPage({required this.study, super.key});
+
+  final SunStudy study;
 
   @override
   State<SunPage> createState() => _SunPageState();
 }
 
 class _SunPageState extends State<SunPage> {
-  late final Future<SiteModel> _model = SiteModel.load();
+  late final Future<SiteModel> _model = SiteModel.load(
+    widget.study.modelAssetKey,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,7 @@ class _SunPageState extends State<SunPage> {
               text: 'Loading the terrain and tree model',
             );
           }
-          return SunExplorer(model: model);
+          return SunExplorer(model: model, study: widget.study);
         },
       ),
     );
@@ -77,9 +82,10 @@ class _LoadMessage extends StatelessWidget {
 }
 
 class SunExplorer extends StatefulWidget {
-  const SunExplorer({required this.model, super.key});
+  const SunExplorer({required this.model, required this.study, super.key});
 
   final SiteModel model;
+  final SunStudy study;
 
   @override
   State<SunExplorer> createState() => _SunExplorerState();
@@ -231,10 +237,13 @@ class _SunExplorerState extends State<SunExplorer> {
   Widget build(BuildContext context) {
     final sun = _day.sunAt(_minute);
     final header = SunPageHeader(
+      title: widget.study.title,
+      area: widget.study.area,
       onBack: () => Navigator.of(context).maybePop(),
     );
     final map = ShadowMap(
       model: _model,
+      photo: widget.study.photo,
       field: _field,
       shadow: _shadow,
       spot: _spot,
@@ -255,6 +264,7 @@ class _SunExplorerState extends State<SunExplorer> {
       onShowToday: _showToday,
     );
     final yearSlider = YearSlider(
+      latitude: _model.latitude,
       dayOfYear: _dayOfYear,
       litMinutes: _yearLitMinutes,
       spotName: _spot.name,
@@ -276,6 +286,10 @@ class _SunExplorerState extends State<SunExplorer> {
       profile: _day,
       minute: _minute,
       spotName: _spot.name,
+    );
+    final notes = MethodNotes(
+      notes: widget.study.notes,
+      credits: widget.study.credits,
     );
     final table = MonthTable(
       months: _months,
@@ -303,6 +317,7 @@ class _SunExplorerState extends State<SunExplorer> {
                         spotSummary: spotSummary,
                         chart: chart,
                         table: table,
+                        notes: notes,
                       )
                     : _NarrowLayout(
                         header: header,
@@ -314,6 +329,7 @@ class _SunExplorerState extends State<SunExplorer> {
                         spotSummary: spotSummary,
                         chart: chart,
                         table: table,
+                        notes: notes,
                       ),
               ),
             ),
@@ -335,6 +351,7 @@ class _WideLayout extends StatelessWidget {
     required this.spotSummary,
     required this.chart,
     required this.table,
+    required this.notes,
   });
 
   final Widget header;
@@ -346,6 +363,7 @@ class _WideLayout extends StatelessWidget {
   final Widget spotSummary;
   final Widget chart;
   final Widget table;
+  final Widget notes;
 
   @override
   Widget build(BuildContext context) {
@@ -384,7 +402,7 @@ class _WideLayout extends StatelessWidget {
             Expanded(flex: 9, child: chart),
           ],
         ),
-        const MethodNotes(),
+        notes,
       ],
     );
   }
@@ -401,6 +419,7 @@ class _NarrowLayout extends StatelessWidget {
     required this.spotSummary,
     required this.chart,
     required this.table,
+    required this.notes,
   });
 
   final Widget header;
@@ -412,6 +431,7 @@ class _NarrowLayout extends StatelessWidget {
   final Widget spotSummary;
   final Widget chart;
   final Widget table;
+  final Widget notes;
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +448,7 @@ class _NarrowLayout extends StatelessWidget {
         spotSummary,
         chart,
         table,
-        const MethodNotes(),
+        notes,
       ],
     );
   }

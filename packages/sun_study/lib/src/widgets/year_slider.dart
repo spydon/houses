@@ -9,6 +9,7 @@ import 'slider_parts.dart';
 
 class YearSlider extends StatelessWidget {
   const YearSlider({
+    required this.latitude,
     required this.dayOfYear,
     required this.litMinutes,
     required this.spotName,
@@ -16,17 +17,16 @@ class YearSlider extends StatelessWidget {
     super.key,
   });
 
+  final double latitude;
   final int dayOfYear;
   final Int32List litMinutes;
   final String spotName;
   final ValueChanged<int> onChanged;
 
-  static const _latitude = 59.228;
-
-  static double _dayLength(int day) {
+  double _dayLength(int day) {
     final declination =
         23.44 * math.sin(2 * math.pi * (284 + day) / 365) * math.pi / 180;
-    final lat = _latitude * math.pi / 180;
+    final lat = latitude * math.pi / 180;
     final cosHour =
         (math.sin(-0.833 * math.pi / 180) -
             math.sin(lat) * math.sin(declination)) /

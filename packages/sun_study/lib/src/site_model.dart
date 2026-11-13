@@ -304,12 +304,10 @@ class SiteModel {
     );
   }
 
-  static const assetKey =
-      'packages/abrahamsbergsvagen_18/assets/surface_model.json';
   static const observerHeightAboveGround = 1.0;
   static const smoothDistance = 40.0;
 
-  static Future<SiteModel> load() async {
+  static Future<SiteModel> load(String assetKey) async {
     final text = await rootBundle.loadString(assetKey);
     return SiteModel.fromJson(jsonDecode(text) as Map<String, dynamic>);
   }

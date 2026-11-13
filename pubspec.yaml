@@ -9,6 +9,7 @@ environment:
 workspace:
   - addresses/abrahamsbergsvägen_18
   - addresses/berganäsvägen_18b
+  - packages/sun_study
 
 dependencies:
   abrahamsbergsvagen_18:
@@ -17,6 +18,8 @@ dependencies:
     path: addresses/berganäsvägen_18b
   flutter:
     sdk: flutter
+  sun_study:
+    path: packages/sun_study
 
 dev_dependencies:
   flutter_lints: ^6.0.0

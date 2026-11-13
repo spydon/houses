@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../address_info.dart';
-
 class SunPageHeader extends StatelessWidget {
-  const SunPageHeader({required this.onBack, super.key});
+  const SunPageHeader({
+    required this.title,
+    required this.area,
+    required this.onBack,
+    super.key,
+  });
 
+  final String title;
+  final String area;
   final VoidCallback onBack;
 
   @override

@@ -1,0 +1,18 @@
+name: sun_study
+description: Shared sun and shade model, page and widgets for the address sun studies.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.7
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter

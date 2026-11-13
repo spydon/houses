@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sun_study/sun_study.dart';
 
 import 'address.dart';
 import 'address_picker_page.dart';
@@ -18,7 +19,7 @@ class HousesApp extends StatelessWidget {
       routes: {
         '/': (context) => const AddressPickerPage(),
         for (final address in addresses)
-          address.path: (context) => address.page,
+          address.path: (context) => SunPage(study: address.study),
       },
       onUnknownRoute: (settings) => MaterialPageRoute<void>(
         builder: (context) => const AddressPickerPage(),
