@@ -20,6 +20,9 @@ class MethodNotes extends StatelessWidget {
         'the shade is easier to read.',
     'A spot counts as sunny when the sun is visible from 1 meter above the '
         'ground, about the eye height of someone sitting down.',
+    'The climbing net hangs from the roof edge of the house, 6.6 meters up, '
+        'to two 4 meter poles on the far side of the pool. It is checked 1 '
+        'meter above the middle of the net instead of 1 meter above the ground.',
     'Tree crowns are treated as solid. Leafless deciduous trees let some light '
         'through from October to May, so those months can be a little brighter '
         'than shown.',

@@ -87,4 +87,29 @@ void main() {
       expect(profile(12, 15).litMinutes, 0);
     });
   });
+  group('climbing net', () {
+    final net = model.netSpot!;
+    final elevation = model.observerElevation(net);
+    final netHorizon = model.horizon(net.east, net.north, elevation: elevation);
+
+    test('is measured 1 meter above the middle of the net', () {
+      expect(model.spots.last, same(net));
+      expect(elevation, closeTo(model.net!.middle.height + 1, 1e-9));
+      expect(elevation, greaterThan(model.baseHeight(net.east, net.north)));
+    });
+
+    test('sees over the house and the trees better than the pool', () {
+      expect(horizonAt(netHorizon, 180), lessThan(horizonAt(horizon, 180)));
+      expect(horizonAt(netHorizon, 60), lessThan(horizonAt(horizon, 60)));
+    });
+
+    test('gets more sun than the pool in June', () {
+      final june = DayProfile.compute(
+        model: model,
+        horizon: netHorizon,
+        dayOfYear: dayOfYearFor(6, 15),
+      );
+      expect(june.litMinutes, greaterThan(profile(6, 15).litMinutes));
+    });
+  });
 }

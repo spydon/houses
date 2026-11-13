@@ -124,7 +124,11 @@ class _SunExplorerState extends State<SunExplorer> {
   }
 
   void _computeSpot() {
-    _horizon = _model.horizon(_spot.east, _spot.north);
+    _horizon = _model.horizon(
+      _spot.east,
+      _spot.north,
+      elevation: _model.observerElevation(_spot),
+    );
     _day = DayProfile.compute(
       model: _model,
       horizon: _horizon,

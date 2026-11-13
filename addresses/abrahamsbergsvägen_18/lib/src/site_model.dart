@@ -9,6 +9,8 @@ class Spot {
     required this.name,
     required this.east,
     required this.north,
+    this.elevation,
+    this.note,
     this.isCustom = false,
   });
 
@@ -21,7 +23,69 @@ class Spot {
   final String name;
   final double east;
   final double north;
+  final double? elevation;
+  final String? note;
   final bool isCustom;
+}
+
+class NetPoint {
+  const NetPoint({
+    required this.east,
+    required this.north,
+    required this.height,
+  });
+
+  factory NetPoint.fromJson(List<dynamic> json) => NetPoint(
+    east: (json[0] as num).toDouble(),
+    north: (json[1] as num).toDouble(),
+    height: (json[2] as num).toDouble(),
+  );
+
+  final double east;
+  final double north;
+  final double height;
+}
+
+class ClimbingNet {
+  ClimbingNet({
+    required this.name,
+    required this.roofAnchors,
+    required this.poles,
+  });
+
+  factory ClimbingNet.fromJson(Map<String, dynamic> json) => ClimbingNet(
+    name: json['name'] as String,
+    roofAnchors: [
+      for (final point in json['roofAnchors'] as List<dynamic>)
+        NetPoint.fromJson(point as List<dynamic>),
+    ],
+    poles: [
+      for (final point in json['poles'] as List<dynamic>)
+        NetPoint.fromJson(point as List<dynamic>),
+    ],
+  );
+
+  final String name;
+  final List<NetPoint> roofAnchors;
+  final List<NetPoint> poles;
+
+  List<NetPoint> get corners => [
+    roofAnchors[0],
+    roofAnchors[1],
+    poles[1],
+    poles[0],
+  ];
+
+  NetPoint get middle {
+    final points = corners;
+    double mean(double Function(NetPoint) value) =>
+        points.map(value).reduce((a, b) => a + b) / points.length;
+    return NetPoint(
+      east: mean((p) => p.east),
+      north: mean((p) => p.north),
+      height: mean((p) => p.height),
+    );
+  }
 }
 
 class HeightGrid {
@@ -196,25 +260,49 @@ class SiteModel {
     required this.ground,
     required this.image,
     required this.buildings,
-    required this.spots,
-  });
+    required List<Spot> spots,
+    this.net,
+  }) : netSpot = net == null ? null : _netSpot(net, ground) {
+    final netSpot = this.netSpot;
+    this.spots = [...spots, ?netSpot];
+  }
 
-  factory SiteModel.fromJson(Map<String, dynamic> json) => SiteModel(
-    latitude: (json['latitude'] as num).toDouble(),
-    longitude: (json['longitude'] as num).toDouble(),
-    gridBearingOfTrueNorth: (json['gridBearingOfTrueNorth'] as num).toDouble(),
-    surface: HeightGrid.fromJson(json['surface'] as Map<String, dynamic>),
-    ground: HeightGrid.fromJson(json['ground'] as Map<String, dynamic>),
-    image: ImageGeoreference.fromJson(json['image'] as Map<String, dynamic>),
-    buildings: [
-      for (final building in json['buildings'] as List<dynamic>)
-        Building.fromJson(building as Map<String, dynamic>),
-    ],
-    spots: [
-      for (final spot in json['spots'] as List<dynamic>)
-        Spot.fromJson(spot as Map<String, dynamic>),
-    ],
-  );
+  factory SiteModel.fromJson(Map<String, dynamic> json) {
+    final net = json['net'] as Map<String, dynamic>?;
+    return SiteModel(
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
+      gridBearingOfTrueNorth: (json['gridBearingOfTrueNorth'] as num)
+          .toDouble(),
+      surface: HeightGrid.fromJson(json['surface'] as Map<String, dynamic>),
+      ground: HeightGrid.fromJson(json['ground'] as Map<String, dynamic>),
+      image: ImageGeoreference.fromJson(json['image'] as Map<String, dynamic>),
+      buildings: [
+        for (final building in json['buildings'] as List<dynamic>)
+          Building.fromJson(building as Map<String, dynamic>),
+      ],
+      spots: [
+        for (final spot in json['spots'] as List<dynamic>)
+          Spot.fromJson(spot as Map<String, dynamic>),
+      ],
+      net: net == null ? null : ClimbingNet.fromJson(net),
+    );
+  }
+
+  static Spot _netSpot(ClimbingNet net, HeightGrid ground) {
+    final middle = net.middle;
+    final below = ground.at(middle.east, middle.north) ?? middle.height;
+    final clearance = (middle.height - below).toStringAsFixed(1);
+    return Spot(
+      name: net.name,
+      east: middle.east,
+      north: middle.north,
+      elevation: middle.height + observerHeightAboveGround,
+      note:
+          'Seen from 1 meter above the middle of the net, which hangs '
+          '$clearance meters above the ground by the pool.',
+    );
+  }
 
   static const assetKey =
       'packages/abrahamsbergsvagen_18/assets/surface_model.json';
@@ -245,7 +333,9 @@ class SiteModel {
   final HeightGrid ground;
   final ImageGeoreference image;
   final List<Building> buildings;
-  final List<Spot> spots;
+  late final List<Spot> spots;
+  final ClimbingNet? net;
+  final Spot? netSpot;
 
   double gridRadians(double azimuth) =>
       (azimuth + gridBearingOfTrueNorth) * math.pi / 180;
@@ -261,6 +351,9 @@ class SiteModel {
     }
     return base;
   }
+
+  double observerElevation(Spot spot) =>
+      spot.elevation ?? baseHeight(spot.east, spot.north);
 
   bool isLit(
     double east,
@@ -319,8 +412,13 @@ class SiteModel {
     return true;
   }
 
-  Float32List horizon(double east, double north, {int bins = 720}) {
-    final base = baseHeight(east, north);
+  Float32List horizon(
+    double east,
+    double north, {
+    double? elevation,
+    int bins = 720,
+  }) {
+    final base = elevation ?? baseHeight(east, north);
     final values = surface.values;
     final width = surface.width;
     final height = surface.height;

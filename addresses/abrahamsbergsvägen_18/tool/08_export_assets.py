@@ -30,6 +30,11 @@ out = {
         {'name': 'Terrace by the house', 'east': 673479.0, 'north': 6570288.5},
         {'name': 'West deck', 'east': 673468.0, 'north': 6570294.0},
     ],
+    'net': {
+        'name': 'Climbing net',
+        'roofAnchors': [[673478.83, 6570292.79, 47.35], [673481.8, 6570288.77, 47.35]],
+        'poles': [[673467.98, 6570284.76, 46.1], [673470.95, 6570280.74, 46.7]],
+    },
 }
 json.dump(out, open('../assets/surface_model.json', 'w'), separators=(',', ':'))
 Image.open('input/cover.png').convert('RGB').save('../assets/cover.jpg', quality=86)
