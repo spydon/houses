@@ -8,10 +8,13 @@ environment:
 
 workspace:
   - addresses/abrahamsbergsvägen_18
+  - addresses/berganäsvägen_18b
 
 dependencies:
   abrahamsbergsvagen_18:
     path: addresses/abrahamsbergsvägen_18
+  berganasvagen_18b:
+    path: addresses/berganäsvägen_18b
   flutter:
     sdk: flutter
 

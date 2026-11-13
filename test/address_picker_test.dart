@@ -6,6 +6,7 @@ void main() {
     await tester.pumpWidget(const HousesApp());
     expect(find.text('Houses'), findsOneWidget);
     expect(find.text('Abrahamsbergsvägen 18'), findsOneWidget);
-    expect(find.text('Open the sun study'), findsOneWidget);
+    expect(find.text('Berganäsvägen 18B'), findsOneWidget);
+    expect(find.text('Open the sun study'), findsNWidgets(2));
   });
 }

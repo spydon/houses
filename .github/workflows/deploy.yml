@@ -29,6 +29,8 @@ jobs:
       - run: flutter test
       - run: flutter test
         working-directory: addresses/abrahamsbergsvägen_18
+      - run: flutter test
+        working-directory: addresses/berganäsvägen_18b
       - run: flutter build web --release --wasm --no-source-maps
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

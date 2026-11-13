@@ -10,6 +10,7 @@ address is its own Flutter package in `addresses/`.
 | ---------------------------------- | -------------------------------------------- |
 | `lib/`                             | The front page and the routing between pages |
 | `addresses/abrahamsbergsvägen_18/` | Sun model for Abrahamsbergsvägen 18          |
+| `addresses/berganäsvägen_18b/`     | Sun model for Berganäsvägen 18B              |
 | `.github/workflows/deploy.yml`     | Builds and publishes the site                |
 
 ## Running locally
