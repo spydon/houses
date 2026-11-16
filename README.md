@@ -58,17 +58,18 @@ git.
 
 `tool/site.json` holds the settings for an address:
 
-| Key                               | Contents                                                                     |
-| --------------------------------- | ---------------------------------------------------------------------------- |
-| `latitude`, `longitude`           | The position used for the sun                                                |
-| `east`, `north`                   | The center of the 800 by 800 meter model, in SWEREF 99 TM                    |
-| `photo`                           | West, south, east and north edges of the aerial photo, in SWEREF 99 TM       |
-| `ground`                          | West edge, north edge, width and height of the detailed ground heights       |
-| `cover`                           | Either `crop`, a pixel box of the aerial photo, or `file`, an image to use   |
-| `cleared` (optional)              | Additional areas where trees are removed, such as demolished buildings       |
-| `clearAroundBuildings` (optional) | `false` to keep the trees around the building outlines                       |
-| `buildingBase` (optional)         | `lowest` to measure buildings from the lowest ground point instead of median |
-| `extra` (optional)                | Additional fields for `surface_model.json`                                   |
+| Key                               | Contents                                                                             |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| `latitude`, `longitude`           | The position used for the sun                                                        |
+| `east`, `north`                   | The center of the 800 by 800 meter model, in SWEREF 99 TM                            |
+| `photo`                           | West, south, east and north edges of the aerial photo, in SWEREF 99 TM               |
+| `ground`                          | West edge, north edge, width and height of the detailed ground heights               |
+| `cover`                           | Either `crop`, a pixel box of the aerial photo, or `file`, an image to use           |
+| `cleared` (optional)              | Additional areas where trees are removed, such as demolished buildings               |
+| `clearAroundBuildings` (optional) | `false` to keep the trees around the building outlines                               |
+| `buildingBase` (optional)         | `lowest` to measure buildings from the lowest ground point instead of median         |
+| `growth` (optional)               | Meters added to trees taller than 5 meters for growth since the scan, 1.5 by default |
+| `extra` (optional)                | Additional fields for `surface_model.json`                                           |
 
 ## Deployment
 

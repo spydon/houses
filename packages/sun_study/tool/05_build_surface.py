@@ -36,7 +36,7 @@ mask = np.zeros(EE.shape, bool)
 for area in cleared:
     mask |= Path(area).contains_points(pts).reshape(EE.shape)
 trees = np.where(mask, 0, trees)
-GROWTH = 1.5
+GROWTH = site.get('growth', 1.5)
 trees = np.where(trees > 5, trees + GROWTH, trees)
 
 # A gabled roof with its ridge parallel to the first edge, as nested blocks that step up towards the ridge.

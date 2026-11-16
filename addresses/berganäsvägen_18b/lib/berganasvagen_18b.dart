@@ -10,14 +10,15 @@ const study = SunStudy(
         'in Swedish time with summer time.',
     'Ground heights come from the Lantmäteriet 1 meter elevation model.',
     'Tree and hedge heights come from the Swedish Forest Agency tree height '
-        'map, measured by airborne laser scanning on 26 March 2020. Every tree '
-        'taller than 5 meters is raised by 1.5 meters for six seasons of growth.',
+        'map, measured by airborne laser scanning on 11 April 2021. Every tree '
+        'taller than 5 meters is raised by 1.25 meters for five seasons of '
+        'growth.',
     'Buildings are blocks, and pitched roofs step up from the eaves to the '
         'ridge. The heights of the house and the older neighboring buildings '
-        'come from the 2020 laser scan: the main part of the house is 6 meters '
+        'come from the 2021 laser scan: the main part of the house is 6 meters '
         'to the eaves and 8.8 meters to the ridge, and the flat roofed west '
         'part and the wing towards the pool are 3.5 meters.',
-    'The house south of the pool was built after the 2020 scan, so its height '
+    'The house south of the pool was built after the 2021 scan, so its height '
         'is an estimate: 4.5 meters to the eaves and 7.5 meters to the ridge.',
     'The aerial photo is the Lantmäteriet orthophoto from 2025, brightened so '
         'the shade is easier to read.',

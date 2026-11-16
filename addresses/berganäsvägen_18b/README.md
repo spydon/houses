@@ -14,16 +14,16 @@ the ground:
 
 | Month     | Sunrise | Sunset | Pool                                                                       | Terrace by the house                                       | West end of the pool                       |
 | --------- | ------- | ------ | -------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------ |
-| January   | 08:31   | 15:23  | none                                                                       | none                                                       | 10:26 to 11:05, 11:17 to 11:34 (1.0 hours) |
+| January   | 08:31   | 15:23  | none                                                                       | none                                                       | 10:26 to 11:08, 11:13 to 11:34 (1.1 hours) |
 | February  | 07:24   | 16:39  | 12:03 to 14:19 (2.3 hours)                                                 | 11:54 to 14:56, 15:12 to 15:33 (3.6 hours)                 | 09:02 to 12:44 (3.7 hours)                 |
 | March     | 06:05   | 17:48  | 08:32 to 16:29 (8.0 hours)                                                 | 09:40 to 10:14, 11:48 to 16:59 (5.8 hours)                 | 08:02 to 12:50 (4.8 hours)                 |
-| April     | 05:35   | 20:01  | 07:04 to 07:14, 07:42 to 07:57, 09:17 to 18:49 (10.0 hours)                | 10:27 to 11:18, 11:27 to 11:42, 12:08 to 18:12 (7.3 hours) | 07:34 to 13:53 (6.3 hours)                 |
-| May       | 04:17   | 21:12  | 07:12 to 08:21, 08:27 to 18:26 (11.2 hours)                                | 10:04 to 19:30 (9.4 hours)                                 | 06:38 to 14:22 (7.8 hours)                 |
-| June      | 03:34   | 22:02  | 06:48 to 18:41, 19:37 to 19:54, 20:09 to 20:29 (12.6 hours)                | 09:59 to 19:43, 20:04 to 20:21 (10.1 hours)                | 06:11 to 14:20 (8.2 hours)                 |
-| July      | 03:59   | 21:46  | 07:22 to 18:41 (11.5 hours)                                                | 10:08 to 19:49 (9.7 hours)                                 | 06:29 to 14:28 (8.0 hours)                 |
-| August    | 05:06   | 20:36  | 07:18 to 08:13, 09:09 to 18:46 (10.6 hours)                                | 10:23 to 18:19, 18:57 to 19:16 (8.3 hours)                 | 07:17 to 14:08 (6.9 hours)                 |
-| September | 06:17   | 19:07  | 09:00 to 17:55 (8.9 hours)                                                 | 10:32 to 11:06, 12:33 to 18:12 (6.2 hours)                 | 07:48 to 08:11, 08:47 to 13:36 (5.2 hours) |
-| October   | 07:26   | 17:39  | 11:06 to 11:31, 12:32 to 14:54, 15:13 to 15:54, 16:03 to 16:16 (3.8 hours) | 10:25 to 10:35, 12:25 to 16:05, 16:09 to 16:46 (4.5 hours) | 08:59 to 13:15 (4.3 hours)                 |
+| April     | 05:35   | 20:01  | 07:04 to 07:14, 07:41 to 07:57, 09:17 to 18:49 (10.0 hours)                | 10:27 to 11:43, 11:52 to 18:15 (7.8 hours)                 | 07:34 to 13:53 (6.3 hours)                 |
+| May       | 04:17   | 21:12  | 07:11 to 18:30 (11.3 hours)                                                | 10:04 to 19:31 (9.5 hours)                                 | 06:38 to 14:22 (7.8 hours)                 |
+| June      | 03:34   | 22:02  | 06:48 to 18:42, 19:37 to 19:54, 20:09 to 20:29 (12.6 hours)                | 09:59 to 19:47, 20:03 to 20:21 (10.1 hours)                | 06:11 to 14:20 (8.2 hours)                 |
+| July      | 03:59   | 21:46  | 07:17 to 18:43 (11.6 hours)                                                | 10:08 to 19:50 (9.7 hours)                                 | 06:29 to 14:28 (8.0 hours)                 |
+| August    | 05:06   | 20:36  | 07:17 to 08:13, 09:06 to 18:46 (10.6 hours)                                | 10:23 to 18:22, 18:57 to 19:16 (8.3 hours)                 | 07:17 to 14:08 (6.9 hours)                 |
+| September | 06:17   | 19:07  | 09:00 to 17:55 (8.9 hours)                                                 | 10:32 to 11:06, 12:32 to 18:12 (6.3 hours)                 | 07:47 to 08:11, 08:46 to 13:36 (5.3 hours) |
+| October   | 07:26   | 17:39  | 11:06 to 11:31, 12:32 to 15:02, 15:13 to 15:54, 16:03 to 16:16 (3.9 hours) | 10:25 to 10:35, 12:25 to 16:06, 16:09 to 16:46 (4.5 hours) | 08:58 to 13:15 (4.3 hours)                 |
 | November  | 07:42   | 15:21  | none                                                                       | 13:18 to 14:04 (0.8 hours)                                 | 09:59 to 12:03 (2.1 hours)                 |
 | December  | 08:39   | 14:46  | none                                                                       | none                                                       | none                                       |
 
@@ -48,18 +48,18 @@ along the road.
 | Source                                                                               | Used for                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------- |
 | Lantmäteriet 1 meter elevation model, through Mapterhorn terrain tiles               | Ground height                                     |
-| Skogsstyrelsen tree height map, laser scanned on 26 March 2020                       | Tree and hedge heights, roof heights of the house |
+| Skogsstyrelsen tree height map, laser scanned on 11 April 2021                       | Tree and hedge heights, roof heights of the house |
 | Lantmäteriet orthophoto from 2025, in `assets/backyard.jpg`                          | Background, building outlines                     |
 | OpenStreetMap building outlines                                                      | Neighboring buildings                             |
 | Solar position algorithm from the US National Oceanic and Atmospheric Administration | Sun position                                      |
 
-The 2020 laser scan also measured the roofs, so the heights of the house and
+The 2021 laser scan also measured the roofs, so the heights of the house and
 the older neighboring buildings come from it. The main part of the house is
 modeled with 6 meter eaves and an 8.8 meter ridge, and the flat roofed west
 part and the wing towards the pool as 3.5 meters. The house south of the pool
 was built after the scan, so its 4.5 meter eaves and 7.5 meter ridge are an
 estimate. Pitched roofs step up from the eaves to the ridge in four steps.
-Trees taller than 5 meters are raised by 1.5 meters for growth since 2020. The
+Trees taller than 5 meters are raised by 1.25 meters for growth since 2021. The
 building outlines and heights are in `tool/buildings.json` and the preset spots
 in `tool/spots.json`.
 
