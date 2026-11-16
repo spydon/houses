@@ -18,6 +18,7 @@ dependencies:
     path: addresses/berganäsvägen_18b
   flutter:
     sdk: flutter
+  material_ui: ^1.11.0
   sun_study:
     path: packages/sun_study
 

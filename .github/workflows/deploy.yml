@@ -17,11 +17,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.47.8
+          flutter-version: 3.50.0
           cache: true
       - run: flutter pub get
       - run: dart format --output=none --set-exit-if-changed .
@@ -34,7 +34,7 @@ jobs:
       - run: flutter test
         working-directory: addresses/berganäsvägen_18b
       - run: flutter build web --release --wasm --no-source-maps
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
           path: build/web
@@ -51,4 +51,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class HouseLogo extends StatelessWidget {
   const HouseLogo({this.size = 48, super.key});
