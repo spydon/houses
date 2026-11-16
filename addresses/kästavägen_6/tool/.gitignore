@@ -1,0 +1,9 @@
+__pycache__/
+*.npy
+*.pkl
+*.bin
+tiles/
+input/
+*.jpg
+dsm_meta.json
+*.log

@@ -7,6 +7,7 @@ void main() {
     expect(find.text('Houses'), findsOneWidget);
     expect(find.text('Abrahamsbergsvägen 18'), findsOneWidget);
     expect(find.text('Berganäsvägen 18B'), findsOneWidget);
-    expect(find.text('Open the sun study'), findsNWidgets(2));
+    expect(find.text('Kästavägen 6'), findsOneWidget);
+    expect(find.text('Open the sun study'), findsNWidgets(3));
   });
 }

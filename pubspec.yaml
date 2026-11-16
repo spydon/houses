@@ -9,6 +9,7 @@ environment:
 workspace:
   - addresses/abrahamsbergsvägen_18
   - addresses/berganäsvägen_18b
+  - addresses/kästavägen_6
   - packages/sun_study
 
 dependencies:
@@ -18,6 +19,8 @@ dependencies:
     path: addresses/berganäsvägen_18b
   flutter:
     sdk: flutter
+  kastavagen_6:
+    path: addresses/kästavägen_6
   material_ui: ^1.11.0
   sun_study:
     path: packages/sun_study
