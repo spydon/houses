@@ -1,10 +1,11 @@
 import pickle, numpy as np, imagecodecs
+from address import E0 as CENTER_EAST
 t = pickle.load(open('tiff_tags.pkl', 'rb'))
 off = t[273][2]; cnt = t[279][2]
 m = pickle.load(open('chm_rows_meta.pkl', 'rb'))
 buf = open('chm_rows.bin', 'rb').read()
 r0, r1 = m['r0'], m['r1']; base = m['need_start']
-E0 = 673474 - 600; E1 = 673474 + 601
+E0 = CENTER_EAST - 600; E1 = CENTER_EAST + 601
 c0 = E0 - 620000; c1 = E1 - 620000
 rows = []
 for r in range(r0, r1 + 1):

@@ -3,8 +3,9 @@ import io
 import numpy as np
 import requests
 from PIL import Image, ImageEnhance
+from address import site
 
-EAST_MIN, EAST_MAX, NORTH_MIN, NORTH_MAX = 673430, 673520, 6570245, 6570320
+EAST_MIN, NORTH_MIN, EAST_MAX, NORTH_MAX = site['photo']
 METERS_PER_PIXEL = 0.08
 width = round((EAST_MAX - EAST_MIN) / METERS_PER_PIXEL)
 height = round((NORTH_MAX - NORTH_MIN) / METERS_PER_PIXEL)

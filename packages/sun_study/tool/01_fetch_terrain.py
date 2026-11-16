@@ -1,9 +1,10 @@
 import math, os, requests, numpy as np
+from address import LAT, LON, E0, N0
 os.makedirs('tiles', exist_ok=True)
 from PIL import Image
 from pyproj import Transformer
 z = 16; n = 2 ** z
-lat, lon = 59.22762, 18.19612
+lat, lon = LAT, LON
 tx = int((lon + 180) / 360 * n); ty = int((1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n)
 s = requests.Session(); s.headers['User-Agent'] = 'sun-analysis-script/1.0'
 R = 2; T = 512
@@ -15,7 +16,7 @@ for dx in range(-R, R + 1):
             r = s.get(f'https://tiles.mapterhorn.com/{z}/{tx+dx}/{ty+dy}.webp', timeout=30); r.raise_for_status(); open(fn, 'wb').write(r.content)
         im = np.asarray(Image.open(fn).convert('RGB')).astype(np.float64)
         mosaic[(dy + R) * T:(dy + R + 1) * T, (dx + R) * T:(dx + R + 1) * T] = im[..., 0] * 256 + im[..., 1] + im[..., 2] / 256 - 32768
-E0, N0 = 682366, 6569770; H = 600
+H = 600
 es = np.arange(E0 - H, E0 + H + 1); ns = np.arange(N0 + H, N0 - H - 1, -1)
 EE, NN = np.meshgrid(es, ns)
 lo, la = Transformer.from_crs(3006, 4326, always_xy=True).transform(EE.ravel(), NN.ravel())

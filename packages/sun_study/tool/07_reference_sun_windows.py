@@ -1,10 +1,10 @@
 import numpy as np, math, json
 from datetime import date
 from sun import day_series
+from address import LAT, LON
 surface = np.load('surface_without_buildings.npy'); ground = np.load('ground_final.npy')
 meta = json.load(open('dsm_meta.json'))
 E_MIN, N_MAX, W, H, CONV = meta['e_min'], meta['n_max'], meta['w'], meta['h'], meta['convergence']
-LAT, LON = 59.22762, 18.19612
 def cell(e, n): return int(math.floor(N_MAX - n)), int(math.floor(e - E_MIN))
 def steps():
     d = 0.75

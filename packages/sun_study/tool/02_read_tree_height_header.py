@@ -1,4 +1,5 @@
 import requests, struct, inflate64, pickle
+import address
 URL = 'https://geodpags.skogsstyrelsen.se/geodataport/data/sksTradhojd01.zip'
 s = requests.Session(); s.headers['User-Agent'] = 'sun-analysis-script/1.0'
 head = s.get(URL, headers={'Range': 'bytes=141-3000141'}).content

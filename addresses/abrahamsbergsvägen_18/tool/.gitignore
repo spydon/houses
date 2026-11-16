@@ -5,3 +5,5 @@ __pycache__/
 tiles/
 input/
 *.jpg
+dsm_meta.json
+*.log

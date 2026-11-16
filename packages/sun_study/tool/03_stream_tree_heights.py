@@ -1,8 +1,9 @@
-import requests, inflate64, pickle, time, sys
+import requests, inflate64, pickle, time
+from address import N0
 URL = 'https://geodpags.skogsstyrelsen.se/geodataport/data/sksTradhojd01.zip'
 t = pickle.load(open('tiff_tags.pkl', 'rb'))
 off = t[273][2]; cnt = t[279][2]
-r0 = 6700000 - 6570285 - 400; r1 = 6700000 - 6570285 + 400
+r0 = 6700000 - N0 - 400; r1 = 6700000 - N0 + 400
 need_start = off[r0]; need_end = off[r1] + cnt[r1]
 s = requests.Session(); s.headers['User-Agent'] = 'sun-analysis-script/1.0'
 inf = inflate64.Inflater()

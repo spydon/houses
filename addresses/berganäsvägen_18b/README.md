@@ -65,9 +65,6 @@ in `tool/spots.json`.
 
 ## Regenerating the data
 
-The scripts in `tool` rebuild `assets/surface_model.json` with Python 3.12,
-numpy, rasterio, pyproj, pillow, requests, matplotlib, inflate64
-and imagecodecs. Run them in order from the `tool` directory. Step 3 streams
-the 6.5 gigabyte tree height file for Stockholm county and keeps only the rows
-around the house, which takes about eight minutes. Step 8 also crops the cover
-image from the aerial photo.
+Run the shared scripts in `packages/sun_study/tool/` with this directory as
+the argument, as described in the README at the root of the repository. The
+settings are in `tool/site.json`.

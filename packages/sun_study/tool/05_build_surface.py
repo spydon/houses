@@ -1,14 +1,15 @@
 import numpy as np, json, math
 from pyproj import Transformer
 from matplotlib.path import Path
+from address import LAT, LON, E0, N0, site
 
 dtm = np.load('dtm_sweref.npy')
-DTM_E0, DTM_N0 = 681766, 6570370
+DTM_E0, DTM_N0 = E0 - 600, N0 + 600
 chm = np.load('chm_raw.npy').astype(np.float32) / 10
-CHM_E0, CHM_N0 = 681766, 6570170
+CHM_E0, CHM_N0 = E0 - 600, N0 + 400
 
 R = 400
-E_MIN, N_MAX = 682366 - R, 6569770 + R
+E_MIN, N_MAX = E0 - R, N0 + R
 W = H = 2 * R
 ce = E_MIN + 0.5 + np.arange(W)
 cn = N_MAX - 0.5 - np.arange(H)
@@ -30,7 +31,7 @@ def grown(poly, margin=0.7):
     p = np.array(poly, float); c = p.mean(axis=0); v = p - c
     return [tuple(map(float, q)) for q in c + v * (1 + margin / np.linalg.norm(v, axis=1, keepdims=True))]
 
-cleared = [grown(b['poly']) for b in buildings_in]
+cleared = site.get('cleared', []) + ([grown(b['poly']) for b in buildings_in] if site.get('clearAroundBuildings', True) else [])
 mask = np.zeros(EE.shape, bool)
 for area in cleared:
     mask |= Path(area).contains_points(pts).reshape(EE.shape)
@@ -53,7 +54,7 @@ buildings = []
 objects = np.zeros_like(ground)
 for b in buildings_in:
     m = Path(b['poly']).contains_points(pts).reshape(EE.shape)
-    base = float(np.median(ground[m]))
+    base = float(ground[m].min() if site.get('buildingBase') == 'lowest' else np.median(ground[m]))
     parts = gable(b['poly'], b['eave'], b['ridge']) if 'ridge' in b else [(b['poly'], b['height'])]
     for poly, height in parts:
         pm = Path(poly).contains_points(pts).reshape(EE.shape)
@@ -63,8 +64,7 @@ surface = ground + np.maximum(trees, objects)
 np.save('surface_without_buildings.npy', ground + trees)
 
 tr = Transformer.from_crs(4326, 3006, always_xy=True)
-lat, lon = 59.22762, 18.19612
-a = tr.transform(lon, lat); b = tr.transform(lon, lat + 0.001)
+a = tr.transform(LON, LAT); b = tr.transform(LON, LAT + 0.001)
 convergence = math.degrees(math.atan2(b[0] - a[0], b[1] - a[1]))
 print('grid bearing of true north', convergence)
 
